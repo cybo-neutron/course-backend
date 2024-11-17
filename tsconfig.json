@@ -19,7 +19,7 @@
 
     "baseUrl": "src",
     "paths": {
-      "@app/*": ["src/app/*"],
+      "@app/*": ["app/*"],
       "@config/*": ["src/config/*"],
       "@db/*": ["src/db/*"],
       "@routes/*": ["src/routes/*"],

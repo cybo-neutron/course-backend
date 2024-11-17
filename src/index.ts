@@ -1,27 +1,27 @@
-import dotenv from "dotenv";
-import path from "path";
-const { NODE_ENV } = process.env;
-dotenv.config({
-  path:
-    NODE_ENV === "local"
-      ? path.join(__dirname, "..", ".env.local")
-      : path.join(__dirname, "..", ".env.prod"),
-});
-
 import express from "express";
+import morganMiddleware from "./middlewares/morgan.middleware";
+import env from "lib/env";
+import routes from "./routes";
+import cors from "cors";
+
 const app = express();
 
 //#region middlewares
 app.use(express.json());
+app.use(morganMiddleware);
+app.use(cors());
 //#endregion
 
-app.get("/", async (req, res) => {
-  res.json({
-    message: "Hello from express server",
-  });
-});
+//#region routes
+app.use("/", routes);
+// app.get("/", async (req, res) => {
+//   res.json({
+//     message: "Hello from express server",
+//   });
+// });
+//#endregion
 
-const port = process.env.PORT || "5100";
+const port = env.PORT;
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });

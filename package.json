@@ -11,34 +11,43 @@
     "prepare": "husky",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "generate": "pnpm drizzle-kit generate"
+    "generate": "pnpm drizzle-kit generate",
+    "migrate": "pnpm drizzle-kit migrate --config drizzle.config.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/express": "^5.0.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.33.0",
+    "drizzle-kit": "^0.27.2",
+    "drizzle-orm": "^0.36.0",
     "drizzle-zod": "^0.5.1",
     "express": "^4.21.0",
-    "postgres": "^3.4.4",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "postgres": "^3.4.5",
     "rimraf": "^5.0.5",
     "ts-node": "^10.9.2",
+    "winston": "^3.15.0",
     "zod": "^3.23.8"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^20.12.7",
-    "drizzle-kit": "^0.24.2",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "3.2.5",
-    "tsx": "^4.15.7",
+    "tsx": "^4.19.2",
     "typescript": "^5.4.5"
   },
   "husky": {

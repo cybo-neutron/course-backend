@@ -1,5 +1,12 @@
+import logger from "@utils/logger";
 import { drizzle } from "drizzle-orm/postgres-js";
+import env from "lib/env";
 import postgres from "postgres";
-// Disable prefetch as it is not supported for "Transaction" pool mode
-const client = postgres(process.env.DATABASE_URL as string, { prepare: false });
-const db = drizzle(client);
+let db: any;
+try {
+  const client = postgres(env.DATABASE_URL, { prepare: false });
+  db = drizzle(client);
+} catch (error: any) {
+  logger.error(error, "Database Connection Error");
+}
+export default db;

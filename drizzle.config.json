@@ -1,6 +1,0 @@
-{
-  "out": "./drizzle/migrations",
-  "schema": "./src/db/schema",
-  "dialect": "postgresql",
-  "dbCredentials": {}
-}
