@@ -1,7 +1,17 @@
 import logger from "@utils/logger";
 import db from "db/db";
 import { Course, CourseSchema } from "db/schema/course.schema";
-import { eq } from "drizzle-orm";
+import { eq, ilike, like, sql } from "drizzle-orm";
+
+export async function getCourseById(courseId: string) {
+  const course = await db
+    .select()
+    .from(Course)
+    .where(eq(Course.id, courseId))
+    .limit(1);
+
+  return course.length > 0 ? course[0] : null;
+}
 
 export async function createCourse(data: CourseSchema) {
   try {
@@ -59,6 +69,20 @@ export async function deleteCourse(whereCondition: { id: string }) {
     return deletedCourse;
   } catch (error) {
     logger.error("Error while deleting course : ", error);
+    throw error;
+  }
+}
+
+export async function getAllPlatformCourses({ query }: { query: string }) {
+  try {
+    const findAllCourses = await db
+      .select()
+      .from(Course)
+      .where(ilike(Course.title, `%${query}%`));
+
+    return findAllCourses;
+  } catch (error) {
+    logger.error(`Error while fetching all courses`, error);
     throw error;
   }
 }

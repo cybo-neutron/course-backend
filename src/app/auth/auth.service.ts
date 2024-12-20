@@ -12,7 +12,13 @@ export const verifyPassword = async (
   return await bcrypt.compare(password, passwordHash);
 };
 
-export function generatateToken(payload: { email: string; role: string }) {
+export function generatateToken(payload: {
+  userId: string;
+  email: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+}) {
   return jwt.sign(payload, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRE_DURATION,
   });
@@ -32,7 +38,7 @@ export function authenticateUser(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): Promise<void> {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     throw new Error("Authorization header not present");
@@ -44,7 +50,7 @@ export function authenticateUser(
     const decodedToken = verifyAccessToken(token);
     logger.info(`User ${decodedToken?.email} authenticated`);
     req.user = decodedToken;
-    next();
+    return next();
   } catch (error) {
     return res.status(403).json({
       message: error.message,

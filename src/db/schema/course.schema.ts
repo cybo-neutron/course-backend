@@ -12,6 +12,7 @@ export const Course = pgTable("course", {
   title: text(),
   description: text(),
   isDeleted: boolean().default(false),
+  isPublished : boolean().default(false),
   ...timestamps,
 });
 

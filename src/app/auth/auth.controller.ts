@@ -18,6 +18,7 @@ import logger from "@utils/logger";
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    console.log({ email, password });
     const user = await findUserByEmail(email);
     logger.info(user);
 
@@ -30,11 +31,23 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const accessToken = generatateToken({
+      userId: user.id,
       email: user.email,
       role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
     });
 
-    res.json({ payload: { accessToken } });
+    res.json({
+      payload: {
+        accessToken,
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    });
   } catch (error) {
     logger.error(error);
     if (error instanceof UserNotFoundError) {
@@ -60,8 +73,11 @@ export const register = async (req: Request, res: Response) => {
       role: UserRoles.USER,
     });
     const accessToken = generatateToken({
+      userId: createdUser.id,
       email: createdUser.email,
       role: createdUser.role,
+      firstName: createdUser.firstName,
+      lastName: createdUser.lastName,
     });
     res.json({
       message: "User created successfully",

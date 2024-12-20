@@ -23,7 +23,8 @@
       "@config/*": ["src/config/*"],
       "@db/*": ["src/db/*"],
       "@routes/*": ["src/routes/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"]
     }
   }
 }
