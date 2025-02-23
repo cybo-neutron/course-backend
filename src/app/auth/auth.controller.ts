@@ -6,7 +6,7 @@ import {
   UserNotFoundError,
 } from "./auth.errors";
 import { createUser, findUserByEmail } from "./auth.repo";
-import { UserRoles, UserSchema } from "db/schema/user";
+import { UserRoles, UserSchema } from "db/schema/user.schema";
 import bcrypt from "bcrypt";
 import {
   generatateToken,

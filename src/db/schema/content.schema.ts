@@ -6,6 +6,23 @@ import { z } from "zod";
 import { Course } from "./course.schema";
 
 export const ContentType = pgEnum("type", ["text", "image", "video", "pdf"]);
+export enum ReadStatus {
+  UNREAD = "unread",
+  READ = "read",
+  IN_PROGRESS = "in_progress",
+}
+
+export const ReadStatusEnum = pgEnum(
+  "readStatus",
+  ["unread", "read", "in_progreass"]
+  // Object.values(ReadStatus).map((status) => status) as [string,...string[]]
+);
+
+export const ContentStatus = pgEnum("status", [
+  "draft",
+  "published",
+  "archived",
+]);
 
 export const Content = pgTable("content", {
   id: uuid()
@@ -17,6 +34,8 @@ export const Content = pgTable("content", {
   type: ContentType().default("text"),
   parentContentId: uuid(),
   courseId: uuid(),
+  readStatus: ReadStatusEnum().default(ReadStatus.UNREAD).notNull(),
+  status: ContentStatus().default("draft").notNull(),
   ...timestamps,
 });
 

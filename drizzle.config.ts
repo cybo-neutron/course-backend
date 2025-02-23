@@ -15,6 +15,6 @@ export default defineConfig({
   //   url: process.env.DATABASE_URL,
   // },
   // dbCredentials: {
-  //   url: "postgresql://postgres.fyecfdyygkeutueulkgb:Hc1CWnkZKICDI1Qu@aws-0-ap-south-1.pooler.supabase.com:6543/postgres"
+  //   url: "postgresql://postgres.fyecfdyygkeutueulkgb:Hc1CWnkZKICDI1Qu@aws-0-ap-south-1.pooler.supabase.com:6543/postgres",
   // },
 });

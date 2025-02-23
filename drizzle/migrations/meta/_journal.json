@@ -43,6 +43,20 @@
       "when": 1733549751993,
       "tag": "0005_even_aaron_stack",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1734709343977,
+      "tag": "0006_fresh_pepper_potts",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1734711611192,
+      "tag": "0007_green_blink",
+      "breakpoints": true
     }
   ]
 }

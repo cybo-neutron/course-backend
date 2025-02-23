@@ -1,5 +1,5 @@
 import db from "db/db";
-import { User, UserSchema } from "db/schema/user";
+import { User, UserSchema } from "db/schema/user.schema";
 import { eq } from "drizzle-orm";
 import { UserAlreadyExistError, UserNotFoundError } from "./auth.errors";
 import logger from "@utils/logger";
@@ -11,7 +11,7 @@ export const createUser = async (data: UserSchema) => {
     .where(eq(User.email, data.email))
     .limit(1);
 
-  if (findUser && findUser.length>0) {
+  if (findUser && findUser.length > 0) {
     logger.error("User you are trying to create already exist");
     throw new UserAlreadyExistError("User already exist");
   }

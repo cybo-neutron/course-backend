@@ -10,10 +10,7 @@ export enum UserRoles {
   USER = "user",
 }
 
-export const UserRole = pgEnum(
-  "role",
-  ["admin", "mentor", "user"]
-);
+export const UserRole = pgEnum("role", ["admin", "mentor", "user"]);
 
 export const User = pgTable("user", {
   id: uuid("id")

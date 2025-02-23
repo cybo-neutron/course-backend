@@ -41,6 +41,10 @@ export async function getContent(req: Request, res: Response): Promise<void> {
   try {
     const { courseId, contentId } = req.query;
 
+    if (!contentId) {
+      throw new Error(`contentId is missing`);
+    }
+
     const content = await ContentRepo.getContent({
       courseId,
       contentId,
@@ -57,6 +61,12 @@ export async function getContent(req: Request, res: Response): Promise<void> {
           payload: {
             ...content[0],
             main_content: signedURL,
+          },
+        });
+      } else {
+        return res.status(200).json({
+          payload: {
+            ...content[0],
           },
         });
       }
@@ -124,5 +134,42 @@ export async function createContent(req: Request, res: Response) {
     res.status(500).json({
       message: "Internal server error",
     });
+  }
+}
+
+export async function editContent(req: Request, res: Response) {
+  try {
+    const {
+      title,
+      description,
+      main_content,
+      type,
+      parentContentId,
+      courseId,
+      contentId,
+    } = req.body;
+
+    console.log(req.body);
+
+    if (!contentId) {
+      throw Error(`contentId is missing`);
+    }
+
+    const content = await ContentRepo.updateContent({
+      ...(title && { title }),
+      ...(description && { description }),
+      ...(main_content && { main_content }),
+      ...(type && { type }),
+      ...(parentContentId && { parentContentId }),
+      courseId,
+      id: contentId,
+    });
+
+    res.status(200).json({
+      payload: content,
+    });
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({ message: "internal server error" });
   }
 }

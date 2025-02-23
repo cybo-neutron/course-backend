@@ -6,7 +6,8 @@ import { authenticateUser } from "@app/auth/auth.service";
 const router: Router = Router();
 
 router.post("/", ContentController.createContent);
-router.get('/get-content',ContentController.getContent);
+router.put("/", ContentController.editContent);
+router.get("/get-content", ContentController.getContent);
 router.get("/:courseId", ContentController.getAllContent);
 // router.get(`/child-content/:parentId`,)
 router.post("/verify-content", ContentController.verifyContent);

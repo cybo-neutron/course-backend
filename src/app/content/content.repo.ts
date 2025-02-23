@@ -75,3 +75,28 @@ export async function createContent({
 
   return content;
 }
+
+export async function updateContent({
+  title,
+  description,
+  main_content,
+  type,
+  parentContentId,
+  courseId,
+  id,
+}: Partial<ContentSchema>) {
+  const updatedContent = await db
+    .update(Content)
+    .set({
+      ...(title && { title }),
+      ...(description && { description }),
+      ...(main_content && { main_content }),
+      ...(type && { type }),
+      ...(parentContentId && { parentContentId }),
+      ...(courseId && { courseId }),
+    })
+    .where(eq(Content.id, id))
+    .returning();
+
+  return updatedContent;
+}
