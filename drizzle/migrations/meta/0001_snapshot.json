@@ -99,9 +99,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     }
@@ -110,11 +108,7 @@
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "admin",
-        "mentor",
-        "user"
-      ]
+      "values": ["admin", "mentor", "user"]
     }
   },
   "schemas": {},

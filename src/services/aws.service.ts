@@ -54,4 +54,3 @@ export async function createPreSignedUrlToUploadData(
 
   return response;
 }
-

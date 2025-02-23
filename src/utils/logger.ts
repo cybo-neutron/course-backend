@@ -12,7 +12,10 @@ const logger = winston.createLogger({
       format: "YYYY-MM-DD HH:mm:ss",
     }),
     align(),
-    printf((info) => `${info.timestamp} ${info.level}: ${info.message} ${info.stack ? `\n${info.stack}` : ""}`)
+    printf(
+      (info) =>
+        `${info.timestamp} ${info.level}: ${info.message} ${info.stack ? `\n${info.stack}` : ""}`
+    )
   ),
   transports: [
     new winston.transports.Console(),
@@ -27,7 +30,6 @@ const logger = winston.createLogger({
 });
 
 export default logger;
-
 
 // logger.info("Hello World");
 // logger.error("Hello World");

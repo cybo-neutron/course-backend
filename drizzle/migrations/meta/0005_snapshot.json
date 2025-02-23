@@ -201,9 +201,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -215,21 +213,12 @@
     "public.type": {
       "name": "type",
       "schema": "public",
-      "values": [
-        "text",
-        "image",
-        "video",
-        "pdf"
-      ]
+      "values": ["text", "image", "video", "pdf"]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "admin",
-        "mentor",
-        "user"
-      ]
+      "values": ["admin", "mentor", "user"]
     }
   },
   "schemas": {},
