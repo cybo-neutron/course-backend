@@ -1,26 +1,26 @@
 import { timestamps } from "db/helpers/timestamps.helper";
 import { relations, sql } from "drizzle-orm";
-import { pgEnum, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { boolean, pgEnum, pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 import { Course } from "./course.schema";
 
 export const ContentType = pgEnum("type", ["text", "image", "video", "pdf"]);
-export enum ReadStatus {
-  UNREAD = "unread",
-  READ = "read",
-  IN_PROGRESS = "in_progress",
-}
+// export enum ReadStatus {
+//   UNREAD = "unread",
+//   READ = "read",
+//   IN_PROGRESS = "in_progress",
+// }
 
-export const ReadStatusEnum = pgEnum(
-  "readStatus",
-  ["unread", "read", "in_progreass"]
-  // Object.values(ReadStatus).map((status) => status) as [string,...string[]]
-);
+// export const ReadStatusEnum = pgEnum(
+//   "readStatus",
+//   ["unread", "read", "in_progreass"]
+// );
 
 export const ContentStatus = pgEnum("status", [
   "draft",
   "published",
+  "unpublished",
   "archived",
 ]);
 
@@ -34,8 +34,9 @@ export const Content = pgTable("content", {
   type: ContentType().default("text"),
   parentContentId: uuid(),
   courseId: uuid(),
-  readStatus: ReadStatusEnum().default(ReadStatus.UNREAD).notNull(),
+  author: uuid(),
   status: ContentStatus().default("draft").notNull(),
+  isDeleted: boolean().default(false),
   ...timestamps,
 });
 

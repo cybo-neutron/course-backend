@@ -51,12 +51,14 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     logger.error(error);
     if (error instanceof UserNotFoundError) {
-      return res.status(400).json({ message: error.message });
+      res.status(400).json({ message: error.message });
+      return;
     }
     if (error instanceof InvalidCredentialsError) {
-      return res.status(400).json({ message: "Invalid Credentials" });
+      res.status(400).json({ message: "Invalid Credentials" });
+      return;
     }
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -88,9 +90,10 @@ export const register = async (req: Request, res: Response) => {
   } catch (error) {
     logger.error(error);
     if (error instanceof UserAlreadyExistError) {
-      return res.json({ message: error.message });
+      res.json({ message: error.message });
+      return;
     }
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -111,16 +114,16 @@ export const verifyToken = async (req: Request, res: Response) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader?.split(" ")[1];
     if (!token) {
-      return res.status(403).json({ message: "No token provided" });
+      res.status(403).json({ message: "No token provided" });
+      return;
     }
     const decoded = verifyAccessToken(token);
-    return res.status(200).json({ payload: decoded });
+    res.status(200).json({ payload: decoded });
   } catch (error) {
     if (error instanceof TokenInvalidError) {
-      return res
-        .status(403)
-        .json({ message: `Token invalid : ${error.message}` });
+      res.status(403).json({ message: `Token invalid : ${error.message}` });
+      return;
     }
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };

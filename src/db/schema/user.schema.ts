@@ -7,10 +7,10 @@ import { z } from "zod";
 export enum UserRoles {
   ADMIN = "admin",
   MENTOR = "mentor",
-  USER = "user",
+  STUDENT = "student",
 }
 
-export const UserRole = pgEnum("role", ["admin", "mentor", "user"]);
+export const UserRole = pgEnum("role", ["admin", "mentor", "student"]);
 
 export const User = pgTable("user", {
   id: uuid("id")
@@ -20,7 +20,7 @@ export const User = pgTable("user", {
   lastName: varchar("last_name", { length: 255 }),
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: text("password").notNull(),
-  role: UserRole("role").default(UserRoles.USER).notNull(),
+  role: UserRole("role").default(UserRoles.STUDENT).notNull(),
   ...timestamps,
 });
 

@@ -31,6 +31,7 @@ export async function uploadFile() {
   const response = await client.send(command);
 }
 
+// to view file
 export async function getFilePresignedUrl(bucketName: string, fileKey: string) {
   const getCommand = new GetObjectCommand({
     Bucket: bucketName,
@@ -41,6 +42,7 @@ export async function getFilePresignedUrl(bucketName: string, fileKey: string) {
   return response;
 }
 
+// to upload file
 export async function createPreSignedUrlToUploadData(
   bucketName: string,
   fileKey: string

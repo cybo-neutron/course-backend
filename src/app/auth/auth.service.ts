@@ -50,9 +50,9 @@ export function authenticateUser(
     const decodedToken = verifyAccessToken(token);
     logger.info(`User ${decodedToken?.email} authenticated`);
     req.user = decodedToken;
-    return next();
+    next();
   } catch (error) {
-    return res.status(403).json({
+    res.status(403).json({
       message: error.message,
     });
   }
