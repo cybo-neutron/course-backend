@@ -9,4 +9,7 @@ router.post(
 );
 router.post("/uploadToPresignedUrl", () => {});
 
+// TODO : add user verification check
+router.post("/notify-upload-complete", uploadController.notifyUploadComplete);
+
 export default router;

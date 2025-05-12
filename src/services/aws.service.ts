@@ -8,7 +8,7 @@ import { readFileSync } from "fs";
 import env from "lib/env";
 import path from "path";
 
-const client = new S3Client({
+export const awsClient = new S3Client({
   region: env.AWS_REGION,
   credentials: {
     accessKeyId: env.AWS_ACCESS_KEY_ID,
@@ -28,7 +28,7 @@ export async function uploadFile() {
     // ACL: "public-read", // if you want the file to be publicly accessible
   });
 
-  const response = await client.send(command);
+  const response = await awsClient.send(command);
 }
 
 // to view file
@@ -38,7 +38,7 @@ export async function getFilePresignedUrl(bucketName: string, fileKey: string) {
     Key: fileKey,
   });
 
-  const response = await getSignedUrl(client, getCommand);
+  const response = await getSignedUrl(awsClient, getCommand);
   return response;
 }
 
@@ -52,7 +52,7 @@ export async function createPreSignedUrlToUploadData(
     Key: fileKey,
   });
 
-  const response = await getSignedUrl(client, putCommand);
+  const response = await getSignedUrl(cclientlient, putCommand);
 
   return response;
 }

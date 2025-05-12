@@ -3,6 +3,7 @@ import morganMiddleware from "./middlewares/morgan.middleware";
 import env from "lib/env";
 import routes from "./routes";
 import cors from "cors";
+import { transcodeVideo } from "@services/video-transcode.service";
 
 const app = express();
 
@@ -25,3 +26,5 @@ const port = env.PORT;
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
+
+transcodeVideo();

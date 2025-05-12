@@ -19,10 +19,11 @@
 
     "baseUrl": "src",
     "paths": {
+      "@/*": ["*"],
       "@app/*": ["app/*"],
-      "@config/*": ["src/config/*"],
-      "@db/*": ["src/db/*"],
-      "@routes/*": ["src/routes/*"],
+      "@config/*": ["config/*"],
+      "@db/*": ["db/*"],
+      "@routes/*": ["routes/*"],
       "@utils/*": ["utils/*"],
       "@services/*": ["services/*"]
     }
