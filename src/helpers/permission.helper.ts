@@ -31,8 +31,6 @@ export const hasPermission = async ({
 
   const attributes = resourcePermission.attributes;
 
-  //   resourceAttributes[ResourceEnum.content]?.create
-
   for (const resource of Object.keys(resourceAttributes)) {
     for (const action of Object.keys(resourceAttributes[resource])) {
       if (!attributes[resource][action]) {
@@ -43,16 +41,16 @@ export const hasPermission = async ({
   return true;
 };
 
-const user = {
-  id: 1,
-  role: "admin",
-};
+// const user = {
+//   id: 1,
+//   role: "admin",
+// };
 
-hasPermission({
-  user,
-  resourceAttributes: {
-    [ResourceEnum.course]: {
-      create: true,
-    },
-  },
-});
+// hasPermission({
+//   user,
+//   resourceAttributes: {
+//     [ResourceEnum.course]: {
+//       create: true,
+//     },
+//   },
+// });

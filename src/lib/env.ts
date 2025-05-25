@@ -15,11 +15,9 @@ const envSchema = z.object({
   AWS_CONTENT_BUCKET_NAME: z.string(),
 });
 
+// Load environment variables
 config({
-  path:
-    NODE_ENV === "local"
-      ? path.join(__dirname, "../..", ".env.local")
-      : path.join(__dirname, "..", ".env.prod"),
+  path: path.join(process.cwd(), ".env.local"),
 });
 
 try {

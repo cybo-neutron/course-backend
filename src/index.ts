@@ -3,7 +3,7 @@ import morganMiddleware from "./middlewares/morgan.middleware";
 import env from "lib/env";
 import routes from "./routes";
 import cors from "cors";
-import { transcodeVideo } from "@services/video-transcode.service";
+import { startAllSubscribers } from "./queues/subscribers";
 
 const app = express();
 
@@ -13,18 +13,11 @@ app.use(morganMiddleware);
 app.use(cors());
 //#endregion
 
-//#region routes
 app.use("/", routes);
-// app.get("/", async (req, res) => {
-//   res.json({
-//     message: "Hello from express server",
-//   });
-// });
-//#endregion
+
+startAllSubscribers();
 
 const port = env.PORT;
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
-transcodeVideo();

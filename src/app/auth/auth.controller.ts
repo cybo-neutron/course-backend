@@ -14,6 +14,7 @@ import {
   verifyPassword,
 } from "./auth.service";
 import logger from "@utils/logger";
+import { getAllPermissions } from "../resource_permission/resource_permission.repo";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -124,6 +125,17 @@ export const verifyToken = async (req: Request, res: Response) => {
       res.status(403).json({ message: `Token invalid : ${error.message}` });
       return;
     }
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getPermissions = async (req: Request, res: Response) => {
+  try {
+    const roles = req.query.roles as UserRoles[];
+    const permissions = await getAllPermissions(roles);
+    res.status(200).json({ payload: permissions });
+  } catch (error) {
+    logger.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -3,33 +3,23 @@ import {
   PutObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { readFileSync } from "fs";
+import { createWriteStream, readFileSync } from "fs";
 import env from "lib/env";
 import path from "path";
+import ffmpeg from "fluent-ffmpeg";
+import { PassThrough, Readable } from "stream";
+import logger from "@/utils/logger";
+import { saveToDisk } from "./transcode.service";
 
-export const awsClient = new S3Client({
+export const s3Client = new S3Client({
   region: env.AWS_REGION,
   credentials: {
     accessKeyId: env.AWS_ACCESS_KEY_ID,
     secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
   },
 });
-
-export async function uploadFile() {
-  const filePath = path.join(__dirname, "file.jpg");
-
-  const fileContent = readFileSync(filePath);
-
-  const command = new PutObjectCommand({
-    Body: fileContent, // content that needs to be uploaded
-    Bucket: "neer-ici-upload", // bucket name
-    Key: "file.jpg", // name of the file in s3 bucket
-    // ACL: "public-read", // if you want the file to be publicly accessible
-  });
-
-  const response = await awsClient.send(command);
-}
 
 // to view file
 export async function getFilePresignedUrl(bucketName: string, fileKey: string) {
@@ -38,7 +28,7 @@ export async function getFilePresignedUrl(bucketName: string, fileKey: string) {
     Key: fileKey,
   });
 
-  const response = await getSignedUrl(awsClient, getCommand);
+  const response = await getSignedUrl(s3Client, getCommand);
   return response;
 }
 
@@ -52,7 +42,67 @@ export async function createPreSignedUrlToUploadData(
     Key: fileKey,
   });
 
-  const response = await getSignedUrl(cclientlient, putCommand);
+  const response = await getSignedUrl(s3Client, putCommand);
 
   return response;
+}
+
+export async function getFileFromS3andUploadtoS3({
+  fromBucket,
+  targetBucket,
+  fileKey,
+  targetFileKey,
+}: {
+  fromBucket: string;
+  targetBucket: string;
+  fileKey: string;
+  targetFileKey: string;
+}) {
+  logger.info(`[getFileFromS3andUploadtoS3] start`, {
+    fromBucket,
+    targetBucket,
+    fileKey,
+    targetFileKey,
+  });
+  const getCommand = new GetObjectCommand({
+    Bucket: fromBucket,
+    Key: fileKey,
+  });
+  const getResponse = await s3Client.send(getCommand);
+  const inputStream = getResponse.Body as Readable;
+
+  if (inputStream) {
+    const outputPath = path.join(__dirname, "../../video/", fileKey);
+    await saveToDisk({
+      inputStream,
+      outputPath,
+    });
+
+    const outputStream = new PassThrough();
+    // transcode the video
+    ffmpeg()
+      .input(outputPath)
+      .format("mp4")
+      .videoCodec("libx264")
+      .pipe(outputStream, { end: true });
+
+    const upload = new Upload({
+      client: s3Client,
+      params: {
+        Bucket: targetBucket,
+        Key: targetFileKey,
+        Body: outputStream,
+        ContentType: `video/mp4`,
+      },
+    });
+
+    logger.info(`[getFileFromS3andUploadtoS3] transcoding complete`, {
+      fromBucket,
+      targetBucket,
+      fileKey,
+      targetFileKey,
+    });
+
+    await upload.done();
+  }
 }

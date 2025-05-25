@@ -7,7 +7,7 @@ import {
   ResourcePermissionInsertSchema,
 } from "db/schema/resource_permission.schema";
 import { UserRoles } from "db/schema/user.schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 export const createResourcePermission = async (
   data: ResourcePermissionInsertSchema
@@ -37,7 +37,7 @@ export const createResourcePermissionByRole = async (role: UserRoles) => {
       break;
     }
     default: {
-      defaultPermission = StudentPermissionDefault;
+      throw new Error("Invalid role");
     }
   }
 
@@ -45,6 +45,8 @@ export const createResourcePermissionByRole = async (role: UserRoles) => {
     role,
     attributes: defaultPermission,
   };
+
+  console.log(data);
 
   const permissionResource = await db
     .insert(ResourcePermission)
@@ -92,4 +94,13 @@ export const getResourcePermission = async (whereClause: {
     .limit(1);
 
   return resourcePermission[0];
+};
+
+export const getAllPermissions = async (roles: UserRoles[]) => {
+  const permissions = await db
+    .select()
+    .from(ResourcePermission)
+    .where(inArray(ResourcePermission.role, roles));
+
+  return permissions;
 };

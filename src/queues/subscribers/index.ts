@@ -8,10 +8,8 @@ const subscribers = {
   },
 };
 
-function startAllSubscribers() {
+export function startAllSubscribers() {
   for (const [subscriberName, subscriber] of Object.entries(subscribers)) {
     subscriber.worker.run();
   }
 }
-
-startAllSubscribers();
